@@ -45,9 +45,6 @@ const toggleKeyword = (keyword) => {
 // The second argument is the value of the checkbox. To be sure to not have bugs, we generally
 // put it in lowercase and without special characters.
 const addNewKeyword = (label, keyword) => {
-    console.log('test');
-    console.log(label);
-    console.log(keyword);
     resetInput();
 
     if (keywords.includes(keyword)) {
@@ -120,7 +117,7 @@ const cleanedKeyword = (keyword) => {
 // into the form (starting autocompletion at 3 letters).
 // DONE: We also show all the words from the same category than this word.
 // DONE: We show in first the keyword containing a part of the word inserted.
-// TODO: If a keyword is already in the list of presents hashtags (checkbox list), we don't show it.
+// DONE: If a keyword is already in the list of presents hashtags (checkbox list), we don't show it.
 const showKeywordsList = (value) => {
     resetKeywordsUl();
     // Starting at 3 letters inserted in the form, we do something
@@ -137,11 +134,13 @@ const showKeywordsList = (value) => {
         
         // This will allow you to add a new element in the list under the text input
         // On click, we add the keyword, like so:
-        keyWordUl.innerHTML += `
-           <li onclick="addNewKeyword('${keyword}', '${cleanedKeyword(keyword)}')">${keyword}</li>
-        `;
+        if(!currentKeywords.includes((keyword.toLowerCase()))){
+            keyWordUl.innerHTML += `
+               <li onclick="addNewKeyword('${keyword}', '${cleanedKeyword(keyword)}')">${keyword}</li>
+            `;
+        };
         otherKeyWords.map(function(kword){
-            if(kword != keyword){
+            if(kword != keyword && !currentKeywords.includes(kword.toLowerCase())){
                 keyWordUl.innerHTML += `
                <li onclick="addNewKeyword('${kword}', '${cleanedKeyword(kword)}')">${kword}</li>
             `;
