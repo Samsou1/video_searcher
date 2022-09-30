@@ -31,12 +31,13 @@ const allKeywords = keywordsCategories.reduce((prevKeywords, category) => [
 // Otherwise, it means that we added a new keyword, or we re-checked a checkbox. So we add the
 // keyword in the keywords list to take in account.
 const toggleKeyword = (keyword) => {
+    console.log(keyword);
     if (currentKeywords.includes(keyword)) {
         currentKeywords = currentKeywords.filter((currentKeyword) => currentKeyword !== keyword);
     } else {
         currentKeywords.push(keyword);
     }
-
+    console.log(currentKeywords);
     reloadArticles();
 };
 
@@ -75,14 +76,16 @@ const addNewKeyword = (label, keyword) => {
 // DONE : Modify this function to display only articles that contain at least one of the selected keywords.
 const reloadArticles = () => {
     document.querySelector('.articlesList').innerHTML = '';
-    
     var articlesToShow = []
-    currentKeywords.map(function(keyword){
-        if(!articlesToShow.includes(data.articles.filter(article => article.tags.includes(keyword))[0])){
-            articlesToShow.push(data.articles.filter(article => article.tags.includes(keyword))[0]);
-        }
-    })
-    
+    if(currentKeywords.length > 0){
+        currentKeywords.map(function(keyword){
+            if(!articlesToShow.includes(data.articles.filter(article => article.tags.includes(keyword))[0])){
+                articlesToShow.push(data.articles.filter(article => article.tags.includes(keyword))[0]);
+            }
+        })
+    }else{
+        articlesToShow = data.articles
+    }
     articlesToShow.forEach((article) => {
         document.querySelector('.articlesList').innerHTML += `
             <article>
