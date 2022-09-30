@@ -45,6 +45,9 @@ const toggleKeyword = (keyword) => {
 // The second argument is the value of the checkbox. To be sure to not have bugs, we generally
 // put it in lowercase and without special characters.
 const addNewKeyword = (label, keyword) => {
+    console.log('test');
+    console.log(label);
+    console.log(keyword);
     resetInput();
 
     if (keywords.includes(keyword)) {
@@ -135,12 +138,12 @@ const showKeywordsList = (value) => {
         // This will allow you to add a new element in the list under the text input
         // On click, we add the keyword, like so:
         keyWordUl.innerHTML += `
-           <li onclick="addNewKeyword("${keyword}", "${cleanedKeyword(keyword)}")">${keyword}</li>
+           <li onclick="addNewKeyword('${keyword}', '${cleanedKeyword(keyword)}')">${keyword}</li>
         `;
         otherKeyWords.map(function(kword){
             if(kword != keyword){
                 keyWordUl.innerHTML += `
-               <li onclick="addNewKeyword("${kword}", "${cleanedKeyword(kword)}")">${kword}</li>
+               <li onclick="addNewKeyword('${kword}', '${cleanedKeyword(kword)}')">${kword}</li>
             `;
             }
         })
