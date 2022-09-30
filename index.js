@@ -106,29 +106,44 @@ const resetInput = () => {
 };
 
 // Clean a keyword to lowercase and without special characters
-// TODO: Make the cleaning
+// DONE: Make the cleaning
 const cleanedKeyword = (keyword) => {
-    const cleanedKeyword = keyword;
+    const cleanedKeyword = keyword.replace(/[^a-zA-Z0-9 ]/g, '').toLowerCase();
 
     return cleanedKeyword;
 };
 
-// TODO: Modify this function to show the keyword containing a part of the word inserted
+// DONE: Modify this function to show the keyword containing a part of the word inserted
 // into the form (starting autocompletion at 3 letters).
-// TODO: We also show all the words from the same category than this word.
-// TODO: We show in first the keyword containing a part of the word inserted.
+// DONE: We also show all the words from the same category than this word.
+// DONE: We show in first the keyword containing a part of the word inserted.
 // TODO: If a keyword is already in the list of presents hashtags (checkbox list), we don't show it.
 const showKeywordsList = (value) => {
+    resetKeywordsUl();
     // Starting at 3 letters inserted in the form, we do something
     if (value.length >= 3) {
+        var keyword = allKeywords.filter(keyword => keyword.toLowerCase().startsWith(value.toLowerCase()))[0];
+        if(keyword == undefined){
+            keyword = allKeywords.filter(keyword => keyword.toLowerCase().includes(value.toLowerCase()))[0];
+        }
+        if(keyword != undefined){
+            var otherKeyWords = keywordsCategories.filter(category => category.keywords.includes(keyword))[0].keywords;
+        }
+
         const keyWordUl = document.querySelector(".inputKeywordsHandle ul");
-        resetKeywordsUl();
         
         // This will allow you to add a new element in the list under the text input
         // On click, we add the keyword, like so:
-        // keyWordUl.innerHTML += `
-        //    <li onclick="addNewKeyword(`${keyword}`, `${cleanedKeyword(keyword)}`)">${keyword}</li>
-        // `;
+        keyWordUl.innerHTML += `
+           <li onclick="addNewKeyword("${keyword}", "${cleanedKeyword(keyword)}")">${keyword}</li>
+        `;
+        otherKeyWords.map(function(kword){
+            if(kword != keyword){
+                keyWordUl.innerHTML += `
+               <li onclick="addNewKeyword("${kword}", "${cleanedKeyword(kword)}")">${kword}</li>
+            `;
+            }
+        })
     }
 };
 
