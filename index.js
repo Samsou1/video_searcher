@@ -31,13 +31,11 @@ const allKeywords = keywordsCategories.reduce((prevKeywords, category) => [
 // Otherwise, it means that we added a new keyword, or we re-checked a checkbox. So we add the
 // keyword in the keywords list to take in account.
 const toggleKeyword = (keyword) => {
-    console.log(keyword);
     if (currentKeywords.includes(keyword)) {
         currentKeywords = currentKeywords.filter((currentKeyword) => currentKeyword !== keyword);
     } else {
         currentKeywords.push(keyword);
     }
-    console.log(currentKeywords);
     reloadArticles();
 };
 
