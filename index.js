@@ -72,11 +72,17 @@ const addNewKeyword = (label, keyword) => {
 };
 
 // We reload the articles depends of the currentKeywords
-// TODO: Modify this function to display only articles that contain at least one of the selected keywords.
+// DONE : Modify this function to display only articles that contain at least one of the selected keywords.
 const reloadArticles = () => {
     document.querySelector('.articlesList').innerHTML = '';
     
-    const articlesToShow = data.articles;
+    var articlesToShow = []
+    currentKeywords.map(function(keyword){
+        if(!articlesToShow.includes(data.articles.filter(article => article.tags.includes(keyword))[0])){
+            articlesToShow.push(data.articles.filter(article => article.tags.includes(keyword))[0]);
+        }
+    })
+    
     articlesToShow.forEach((article) => {
         document.querySelector('.articlesList').innerHTML += `
             <article>
@@ -129,23 +135,24 @@ const showKeywordsList = (value) => {
         if(keyword != undefined){
             var otherKeyWords = keywordsCategories.filter(category => category.keywords.includes(keyword))[0].keywords;
         }
-
-        const keyWordUl = document.querySelector(".inputKeywordsHandle ul");
-        
-        // This will allow you to add a new element in the list under the text input
-        // On click, we add the keyword, like so:
-        if(!currentKeywords.includes((keyword.toLowerCase()))){
-            keyWordUl.innerHTML += `
-               <li onclick="addNewKeyword('${keyword}', '${cleanedKeyword(keyword)}')">${keyword}</li>
-            `;
-        };
-        otherKeyWords.map(function(kword){
-            if(kword != keyword && !currentKeywords.includes(kword.toLowerCase())){
+        if(keyword != undefined){
+            const keyWordUl = document.querySelector(".inputKeywordsHandle ul");
+            
+            // This will allow you to add a new element in the list under the text input
+            // On click, we add the keyword, like so:
+            if(!currentKeywords.includes((keyword.toLowerCase()))){
                 keyWordUl.innerHTML += `
-               <li onclick="addNewKeyword('${kword}', '${cleanedKeyword(kword)}')">${kword}</li>
-            `;
-            }
-        })
+                   <li onclick="addNewKeyword('${keyword}', '${cleanedKeyword(keyword)}')">${keyword}</li>
+                `;
+            };
+            otherKeyWords.map(function(kword){
+                if(kword != keyword && !currentKeywords.includes(kword.toLowerCase())){
+                    keyWordUl.innerHTML += `
+                   <li onclick="addNewKeyword('${kword}', '${cleanedKeyword(kword)}')">${kword}</li>
+                `;
+                }
+            })
+        }
     }
 };
 
